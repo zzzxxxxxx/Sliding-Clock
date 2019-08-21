@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    #myCanvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -250px;
+      margin-left: -250px;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="500" height="500"></canvas>
+  <script>
+    var myCanvas = document.getElementById('myCanvas');
+    var ctx = myCanvas.getContext('2d');
+
+    // 描边矩形
+    // ctx.strokeStyle = 'red';
+    // ctx.strokeRect(100, 100, 150, 150);
+
+    //填充矩形
+    // ctx.fillStyle = 'red';
+    // ctx.fillRect(100, 100, 150, 150);
+
+    // 描边圆
+    // ctx.lineWidth = 10;
+    // ctx.strokeStyle = 'red';
+    // ctx.arc(250, 250, 50, -90 * Math.PI / 180, 60 * Math.PI / 180, false);
+    // ctx.stroke();
+
+    // 实心圆
+    // ctx.fillStyle = 'red';
+    // ctx.arc(250, 250, 50, 0, Math.PI * 2);
+    // ctx.fill();
+
+    ctx.lineWidth = 17;
+    ctx.strokeStyle = '#0ff';
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#0ff";
+
+    function renderTime() {
+      //填充渐变背景   创建背景 ---> 填充
+      gradient = ctx.createRadialGradient(250, 250, 5, 250, 250, 300);
+      gradient.addColorStop(0, '#03303a');
+      gradient.addColorStop(1, '#000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0,0, 500, 500)
+      //弧
+      var date = new Date();
+      var h = date.getHours();
+      var m = date.getMinutes();
+      var s = date.getSeconds();
+      var ms = date.getMilliseconds();
+
+      var showSec = s + ms / 1000;
+
+      ctx.beginPath();
+      ctx.arc(250, 250, 200, degToRad(270), degToRad((h * 30) - 90), false);
+      ctx.stroke();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(250, 250, 170, degToRad(270), degToRad((m * 6) - 90), false);
+      ctx.stroke();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(250, 250, 140, degToRad(270), degToRad((showSec * 6) - 90), false);
+      ctx.stroke();
+      ctx.closePath();
+
+      h = h < 10 ? '0' + h : h
+      m = m < 10 ? '0' + m : m
+      s = s < 10 ? '0' + s : s
+      // 时间显示
+      ctx.font = '25px Helvatice'
+      ctx.fillStyle = '#0ff';
+      ctx.fillText(h + ':' + m + ':' + s, 175, 200)
+
+    }
+
+    setInterval(function() {
+      // 获取当前时间
+      // 更新canvas
+      renderTime();
+    }, 40)
+
+    function degToRad(deg) {
+      return deg * Math.PI / 180
+    }
+  </script>
+</body>
+</html>
